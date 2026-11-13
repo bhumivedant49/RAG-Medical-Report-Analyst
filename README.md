@@ -114,10 +114,5 @@ Streamlit
 
 
 📧 Contact
-👤 Author: Harshal
-
-GitHub: Harshal-2004
-
-Email: harshalshirole14@gmail.com 
-
+👤 Author: Bhumi Vedant, Harshal Shirole, Ayush Nair
 
