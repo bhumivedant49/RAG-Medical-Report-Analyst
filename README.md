@@ -15,6 +15,23 @@ ReportLens is a document-grounded assistant for exploring the wording and inform
 - Display source filename and page citations with answers.
 - Generate a short plain-language orientation to the uploaded report.
 
+## Application Screenshots
+
+### 1. Upload Medical Report
+Upload a PDF medical report and process it for analysis.
+
+![Upload Medical Report](assets/upload-screen.png)
+
+### 2. Report Overview
+Get a simplified overview of the uploaded medical report.
+
+![Report Overview](assets/report-overview.png)
+
+### 3. Ask Questions About Your Report
+Ask questions and receive context-based answers with source page references.
+
+![Chat Response](assets/chat-response.png)
+
 ## How it works
 
 ```text
@@ -109,19 +126,13 @@ You can also enter the Groq key in the app sidebar for the current session.
 │   ├── pdf_reader.py
 │   ├── retriever.py
 │   └── groq_client.py
+├── assets/
+│   ├── sterling-accuris-pathology-sample-report-unlocked.pdf
+│   └── RAG_Working.webp
 ├── .env.example
 ├── .gitignore
 └── requirements.txt
 ```
-
-## Acknowledgement and project history
-
-This repository's earlier PDF-chat prototype was based on/adapted from the public project
-[Harshal-2004/RAG](https://github.com/Harshal-2004/RAG). This version is a separate
-medical-report explanation workflow with a new page-aware ingestion, retrieval,
-citation, and safety-oriented prompt design. Any retained upstream code or assets must
-continue to be attributed and used in accordance with the upstream project's license.
-Do not represent inherited work as independently authored.
 
 ## Author
 

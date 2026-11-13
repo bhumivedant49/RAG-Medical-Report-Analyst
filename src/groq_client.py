@@ -1,6 +1,6 @@
 from groq import Groq
 
-MODEL = "llama-3.3-70b-versatile"
+MODEL = "openai/gpt-oss-120b"
 
 SAFETY_INSTRUCTIONS = """
 You explain the wording and information contained in medical documents.
