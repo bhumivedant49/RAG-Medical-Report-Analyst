@@ -1,8 +1,4 @@
-from huggingface_hub import InferenceClient
-import os
+from app import run_app
 
-client = InferenceClient(
-    model="mistralai/Mistral-7B-Instruct-v0.3",
-    token=os.getenv("HF_TOKEN")
-)
-print(client.text_generation("Hello!", max_new_tokens=10))
+if __name__ == "__main__":
+    run_app()

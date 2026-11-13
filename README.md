@@ -1,118 +1,128 @@
-# 📚 Ask PDF - RAG Chatbot
-A **Retrieval-Augmented Generation (RAG) chatbot** built with **Streamlit**, **LangChain**, **Groq API**, **FAISS**, and **HuggingFace embeddings**. This app allows you to **chat with your PDFs** and get context-aware answers.
+# ReportLens — Medical Report Explainer
 
-## 🚀 Features
-- 📄 Query any PDF stored in the `vectorstores/` folder  
-- ⚡ Powered by **Groq’s Llama-3-8B** for fast responses  
-- 🔍 Uses **FAISS** vector database for efficient retrieval  
-- 🧠 Embeddings with HuggingFace `all-MiniLM-L12-v2`  
-- 🎨 ChatGPT-like interface with **Streamlit**  
-- ❌ Hallucination filter (rejects irrelevant answers)
+ReportLens is a document-grounded assistant for exploring the wording and information in medical PDFs. It extracts text page-by-page, indexes passages locally, retrieves relevant evidence for a question, and returns an explanation with source-page references.
 
-##  App Workflow 
+> **Important:** ReportLens is an educational document-explanation project. It does not diagnose medical conditions, recommend treatment, or replace a qualified healthcare professional. Do not use it for emergencies or clinical decisions.
 
-![App UI](assets/RAG_WORKING.webp)
+## What it does
 
+- Upload one or more text-based PDF reports in a Streamlit interface.
+- Extract selectable text while retaining each page number and filename.
+- Split text into overlapping passages for retrieval.
+- Generate sentence embeddings with `all-MiniLM-L6-v2`.
+- Search the passages with an in-memory FAISS index.
+- Ask questions and receive answers grounded in retrieved excerpts.
+- Display source filename and page citations with answers.
+- Generate a short plain-language orientation to the uploaded report.
 
-## 🛠️ Tech Stack
-- [Python](https://www.python.org/)  
-- [Streamlit](https://streamlit.io/)  
-- [LangChain](https://www.langchain.com/)  
-- [Groq API](https://groq.com/)  
-- [FAISS](https://faiss.ai/)  
-- [HuggingFace Transformers](https://huggingface.co/)  
+## How it works
 
-## 📸 App Screenshot
-
-![App_UI](assets/Screenshot.png)
-
-## 📂 Project Structure
-
-.
-├── data/ # Raw PDF files (before embedding)
-
-├── vectorstores/ # Precomputed FAISS vector databases
-
-├── build_vectorstore.py # Script to create embeddings from PDFs
-
-├── main.py / app.py # Streamlit chatbot app
-
-├── phase_1.py,2.py,3.py # Experimentation files
-
-├── .env # API keys (ignored in git)
-
-├── .env.example # Example environment file
-
-├── requirements.txt # Dependencies
-
-└── README.md # Project documentation
-
-
-
-## ⚙️ Setup & Installation
-### 1️⃣ Clone Repo
+```text
+PDF upload
+   │
+   ▼
+Page-level text extraction (pypdf)
+   │
+   ▼
+Overlapping passage creation + page metadata
+   │
+   ▼
+SentenceTransformer embeddings
+   │
+   ▼
+FAISS similarity search
+   │
+   ▼
+Relevant passages + user question
+   │
+   ▼
+Groq-hosted LLM → grounded explanation + page citations
 ```
-git clone https://github.com/Harshal-2004/RAG.git
-cd (https://github.com/Harshal-2004/RAG)
+
+The embedding and FAISS index run locally for the active session. Retrieved text is sent to Groq to generate the answer. Review the provider's privacy and data-handling terms before uploading sensitive documents. This prototype is not intended for production handling of protected health information.
+
+## Run locally
+
+### 1. Clone this repository
+
+```bash
+git clone https://github.com/bhumivedant49/RAG-Medical-Report-Analyst.git
+cd RAG-Medical-Report-Analyst
 ```
-2️⃣ Install Requirements
+
+### 2. Create and activate a virtual environment
+
+```bash
+python -m venv .venv
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+# macOS / Linux
+source .venv/bin/activate
 ```
+
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
 ```
-3️⃣ Setup Environment Variables
-```
-Create a .env file (not tracked in git):
+
+### 4. Configure the API key
+
+Copy `.env.example` to `.env` and add your own Groq API key:
+
+```env
 GROQ_API_KEY=your_groq_api_key_here
 ```
-4️⃣ Build Vectorstores (from PDFs)
-```
-python build_vectorstore.py
-```
-5️⃣ Run the Streamlit App
-```
+
+Never commit `.env` or publish API keys.
+
+### 5. Start the app
+
+```bash
 streamlit run main.py
 ```
 
-🎯 Usage
+You can also enter the Groq key in the app sidebar for the current session.
 
-Select a PDF (vectorstore) from the dropdown.
+## Current limitations
 
-Ask a question in the chat input.
+- Scanned/image-only PDFs are not OCR-processed.
+- The report index is held in memory and is cleared when the session is reset.
+- The overview uses a bounded text excerpt for long reports; it may not cover every page.
+- Retrieval quality depends on PDF text extraction and the relevance of the selected passages.
+- Model-generated explanations can be incomplete or incorrect. Check important details against the original report and a clinician.
 
-Get context-based answers directly from the PDF.
+## Privacy notes
 
+- Uploaded files are processed in the active Streamlit session; this prototype does not provide permanent report storage.
+- The extracted text from retrieved passages and summary input is sent to Groq for generation.
+- Do not upload identifiable or sensitive health documents unless you have reviewed and accepted the applicable provider terms and have permission to process them.
 
+## Project structure
 
-🤝 Contributing
+```text
+.
+├── app.py
+├── main.py
+├── src/
+│   ├── __init__.py
+│   ├── pdf_reader.py
+│   ├── retriever.py
+│   └── groq_client.py
+├── .env.example
+├── .gitignore
+└── requirements.txt
+```
 
-Contributions are welcome!
+## Acknowledgement and project history
 
-Fork the repo
+This repository's earlier PDF-chat prototype was based on/adapted from the public project
+[Harshal-2004/RAG](https://github.com/Harshal-2004/RAG). This version is a separate
+medical-report explanation workflow with a new page-aware ingestion, retrieval,
+citation, and safety-oriented prompt design. Any retained upstream code or assets must
+continue to be attributed and used in accordance with the upstream project's license.
+Do not represent inherited work as independently authored.
 
-Create a new branch (feature/your-feature)
+## Author
 
-Commit changes and open a Pull Request
-
-
-
-📜 License
-
-This project is licensed under the MIT License – see the LICENSE file for details.
-
-🙌 Acknowledgements
-
-LangChain
-
-Groq
-
-HuggingFace
-
-FAISS
-
-Streamlit
-
-
-
-📧 Contact
-👤 Author: Bhumi Vedant, Harshal Shirole, Ayush Nair
-
+Bhumi Vedant
